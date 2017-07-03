@@ -41,7 +41,18 @@ internal func exerciseOne() {
      
      */
     
+    // Saving all data to different variables sure can get messy...
+    //SO ALWAYS create a struct (or class) to encapsulate the data you read from JSON responses! 
+    let lastName = userData["results"][0]["name"]["last"].stringValue
+    let streetName = userData["results"][0]["location"]["street"].stringValue
+    let city = userData["results"][0]["location"]["city"].stringValue
+    let state = userData["results"][0]["location"]["state"].stringValue
+    let zipCode = userData["results"][0]["location"]["postcode"].intValue
+    let title = userData["results"][0]["name"]["title"].stringValue
+    let email = userData["results"][0]["email"].stringValue
+    let cellNum = userData["results"][0]["cell"].stringValue
     
+    print("\(firstName) \(lastName) lives at \(streetName) in \(city), \(state), \(zipCode). If you want to contact \(title). \(lastName), you can email \(email) or call at \(cellNum).")
     
     
     
@@ -64,11 +75,10 @@ internal func exerciseTwo() {
     
     // We save the value for ["feed"]["entry"][0] to topMovieData to pull out just the first movie's data
     let topMovieData = moviesData["feed"]["entry"][0]
+    
     let topMovie = Movie(json: topMovieData)
     
-    // Uncomment this print statement when you are ready to check your code!
-    
-//    print("The top movie is \(topMovie.name) by \(topMovie.rightsOwner). It costs $\(topMovie.price) and was released on \(topMovie.releaseDate). You can view it on iTunes here: \(topMovie.link)")
+    print("The top movie is \(topMovie.name) by \(topMovie.rightsOwner). It costs $\(topMovie.price) and was released on \(topMovie.releaseDate). You can view it on iTunes here: \(topMovie.link)")
 }
 
 internal func exerciseThree() {
@@ -87,7 +97,7 @@ internal func exerciseThree() {
     
     // We've done you the favor of grabbing an array of JSON objects representing each movie
     let allMoviesData = moviesData["feed"]["entry"].arrayValue
-    
+//    print("hello")
     /*
      
      Figure out a way to turn the allMoviesData array into Movie structs!
@@ -95,6 +105,9 @@ internal func exerciseThree() {
      */
     var allMovies: [Movie] = []
     
+    for movie in allMoviesData {
+        allMovies.append(Movie.init(json: movie))
+    }
     
     
     
@@ -105,8 +118,12 @@ internal func exerciseThree() {
      contains the `String` "Disney". Iterate over all the values in `allMovies` to check!
      
      */
-//    print("The following movies are Disney movies:")
-    
+    print("The following movies are Disney movies:")
+    for movie in allMovies {
+        if(movie.rightsOwner.contains("Disney")) {
+            print("\(movie.name) ")
+        }
+    }
     
     
     
@@ -116,8 +133,13 @@ internal func exerciseThree() {
      movie that costs less than $15. Iterate over all the values in `allMovies` to check!
      
      */
-//    print("The following movies are cost less than $15:")
+    print("The following movies cost less than $15:")
     
+    for movie in allMovies {
+        if (movie.price < 15) {
+            print("\(movie.name): \(movie.price)")
+        }
+    }
     
     
     
@@ -127,8 +149,13 @@ internal func exerciseThree() {
      each movie released in 2016. Iterate over all the values in `allMovies` to check!
      
      */
-//    print("The following movies were released in 2016:")
+    print("The following movies were released in 2016:")
     
+    for movie in allMovies {
+        if (movie.releaseDate.contains("2016")) {
+            print("\(movie.name): \(movie.releaseDate)")
+        }
+    }
     
     
     
